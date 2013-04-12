@@ -16,6 +16,9 @@ h1, p {
 .kort {
 	cursor: pointer; 
 }
+.noclick {
+    cursor: default;
+}
 
 a {
 	color: #98ff9f;
@@ -48,4 +51,54 @@ footer {
 .isnothidden {
     z-index:1000;
 
+}
+
+.flip-container {
+	-webkit-perspective: 500;
+	-moz-perspective: 500;
+	perspective: 500;
+	vertical-align: top;
+}
+
+.flip-container.rotated .flipper {
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+	}
+
+.flipper {
+	-webkit-transition: 0.6s;
+	-webkit-transform-style: preserve-3d;
+
+	-moz-transition: 0.6s;
+	-moz-transform-style: preserve-3d;
+
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	position: relative;
+}
+
+.kort, .cardbackside {
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	backface-visibility: hidden;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.kort {
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
+.cardbackside {
+      cursor: pointer;
+      background: #000 url(../cardback.svg);
+      z-index: 2;
+}
+.smaller {
+    font-size: smaller;
 }

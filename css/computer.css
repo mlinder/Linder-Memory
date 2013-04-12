@@ -126,6 +126,41 @@ nav {
     
 }
 
+#options a:link, #options a:visited, #options a:hover, #about a:link, #about a:visited, #about a:hover {
+    color: #98ff9f;
+}
+
+#about {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    /* Fallback for web browsers that doesn't support RGBa */
+    background: rgb(0, 0, 0);
+    /* RGBa with 0.9 opacity */
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    margin: 0;
+    padding: 0px;
+}
+
+#about p {
+    margin: 0 0 20px 0;
+}
+
+#about .close {
+    
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px; /* Half the height */
+    
+}
+
 .onclicklink {
     color: #98ff9f;
     cursor: pointer;
@@ -162,9 +197,15 @@ tr {
 	padding: 0px;
 }
 
-.kort, .kortnoclick {
-    height: 150px;
-    width: 150px;
+.kort, .cardbackside {
     display: block;
     margin: 0px;
+}
+.flip-container, .kort, .cardbackside {
+	width: 150px;
+	height: 150px;
+}
+
+.cardbackside:hover {
+	background: url(../cardback_hover.svg);
 }

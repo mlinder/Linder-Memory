@@ -1,24 +1,26 @@
 <!DOCTYPE HTML>
-<?php // <html manifest="application.manifest">?>
+<html manifest="application.manifest">
 <head>
 <meta charset="UTF-8">
 <title>LinderMem</title>
 
-<!-- Linder intnet11 Lab3 -->
+<!-- Linder intnet11 Lab3 1.3 beta -->
 
-<meta name="viewport" content="width = device-width; initial-scale=1; maximum-scale=1; user-scalable=0" />
+<meta name="viewport" content="width = device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-<link rel="apple-touch-icon" href="img/touchicon.png" />
-<?php // <link rel="apple-touch-startup-image" href="startup.png"> ?>
+<link rel="apple-touch-icon" href="touchicon.png" />
+
+<?php // <!-- http://alxgbsn.co.uk/2011/10/24/ios-startup-images-using-css-media-queries/ -->?>
 
 <!-- 320x460 for iPhone 3GS -->
 <link rel="apple-touch-startup-image" media="(max-device-width: 480px) and not (-webkit-min-device-pixel-ratio: 2)" href="img/startup.png" />
 
 <!-- 640x920 for retina display -->
 <link rel="apple-touch-startup-image" media="(max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2)" href="img/startup2x.png" />
-<? /*
+
+<?php /*
 <!-- iPad Portrait 768x1004 -->
 <link rel="apple-touch-startup-image" media="(min-device-width: 768px) and (orientation: portrait)" href="startup-iPad-portrait.png" />
 
@@ -31,6 +33,8 @@
 
 <link rel="stylesheet" media="all" href="css/masterstyle.css" />
 
+<link rel="stylesheet" media="all and (min-device-width: 481px)" href="css/computer.css" />
+
 <link rel="stylesheet" media="all and (max-device-width: 480px) and (orientation:portrait)" href="css/iphonestyle_portrait.css" />
 <link rel="stylesheet" media="all and (max-device-width: 480px) and (orientation:landscape)" href="css/iphonestyle_landscape.css" />
 
@@ -39,7 +43,6 @@
 <link rel="stylesheet" media="all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape)" href="ipad-landscape.css" />
 */ ?>
 
-<link rel="stylesheet" media="all and (min-device-width: 481px)" href="css/computer.css" />
 
 <script type="text/javascript">
 
@@ -58,7 +61,7 @@ var retina = window.devicePixelRatio > 1 ? true : false;
 
 
 if (retina || (window.innerHeight > 700)) {
-    // the user has a retina display or a screen height more than 700px
+    // the user has a retina display or a screen height more than 700px => 150x150px images
 
 	var loadkort = ["http://farm5.static.flickr.com/4110/5190565123_cbc79d99ba_q.jpg",
 	"http://farm5.static.flickr.com/4151/5191071610_7e17a8ef11_q.jpg",
@@ -71,7 +74,7 @@ if (retina || (window.innerHeight > 700)) {
 
 }
 else {
-    // the user has a non-retina display
+    // the user has a non-retina display => 75x75px images
 
 	var loadkort = ["http://farm5.static.flickr.com/4110/5190565123_cbc79d99ba_s.jpg",
 	"http://farm5.static.flickr.com/4151/5191071610_7e17a8ef11_s.jpg",
@@ -101,12 +104,13 @@ function load() {
 	
 	// resettar spelplanen, om ett nytt spel ska anropas!
 	for (var i=1; i<kort.length+1; i++) {
-		document.getElementById("kort"+(i)).src = "cardback.svg";
-		document.getElementById("kort"+(i)).className = "kort"; // klickpekaren
+		restoreHidImage(i);
+		// document.getElementById("kort"+(i)).src = "cardback.svg";
+		// document.getElementById("kort"+(i)).className = "kort"; // klickpekaren*/
 	}
 
-	//alert("hej");
-
+	val1 = null;
+	val2 = null;
 	
 	resetpointsandtext();
 	
@@ -114,8 +118,7 @@ function load() {
 }
 
 
-function click(id) {
-
+function clickclick(id) {
 
 /*
 
@@ -153,7 +156,9 @@ function click(id) {
 			if(val1 == null) {
 			
 				document.getElementById("kort"+(id)).src = kort[id-1]; // gör bild synlig.
-				document.getElementById("kort"+(id)).className = "kortnoclick"; // tar bort klickpekaren
+				document.getElementById("kort"+(id)).className += " noclick"; // tar bort klickpekaren
+				document.getElementById("flip-"+(id)).className += " rotated";
+
 			
 				val1 = id;
 			
@@ -164,7 +169,9 @@ function click(id) {
 			else {
 		
 				document.getElementById("kort"+(id)).src = kort[id-1]; // gör bild synlig.
-				document.getElementById("kort"+(id)).className = "kortnoclick"; // tar bort klickpekaren
+				document.getElementById("kort"+(id)).className += " noclick"; // tar bort klickpekaren
+				document.getElementById("flip-"+(id)).className += " rotated";
+
 			
 				val2 = id;
 
@@ -222,8 +229,9 @@ function click(id) {
 					updatetext("Inte par...");
 				
 					// vänder tillbaka brickorna och rensar val1 och val2. // MÅSTE SKE EFTER NÅGRA SEKUNDER SÅ ATT DET GÅR ATT SE!!!
-				
-					setTimeout("restorekort()", 3000);
+
+					setTimeout("restorekorttime(" + val1 + ", " + val2 + ")", 3000);
+					// setTimeout("restorekort()", 3000);
 			
 				}
 		
@@ -274,7 +282,7 @@ function updatetext(message) {
 function resetpointsandtext() {
 
 //	updatetext("Nytt spel! Spelare 1 börjar alltid.");
-	
+		
 	if (spelare1) {
 		updatetext("Nytt spel! Spelare 1 börjar.");
 	}
@@ -292,18 +300,24 @@ function resetpointsandtext() {
 	
 }
 
+function restoreHidImage(theImage) {
+
+	setTimeout(function(){document.getElementById("kort"+(theImage)).src = "cardback.svg"}, 1000);
+	document.getElementById("kort"+(theImage)).className = "kort"; // klickpekaren
+	document.getElementById("flip-"+(theImage)).className = "flip-container";
+
+}
 
 function restorekort() {
 	
-	// BEHÖVER EN IF-SATS SOM KOLLAR OM DEN REDAN HAR KÖRTS!!!!!
+	// EN IF-SATS SOM KOLLAR OM DEN REDAN HAR KÖRTS
 	
 	if (val1 !=null && val2 !=null) {
-			
-		document.getElementById("kort"+(val1)).src = "cardback.svg";
-		document.getElementById("kort"+(val1)).className = "kort"; // klickpekaren
-	
-		document.getElementById("kort"+(val2)).src = "cardback.svg";
-		document.getElementById("kort"+(val2)).className = "kort"; // klickpekaren
+    	
+
+    	restoreHidImage(val1);
+    	restoreHidImage(val2);
+
 		
 		val1 = null;
 		val2 = null;
@@ -321,26 +335,34 @@ function restorekort() {
 
 }
 
-function hover(id) {
-	
-	if(document.getElementById("kort"+(id)).src.indexOf("cardback.svg") != -1) {
 
-		document.getElementById("kort"+(id)).src = "cardback_hover.svg";	
 
-	}
-}
-
-function unhover(id) {
+function restorekorttime(val1xx, val2yy) {
 	
-	if(document.getElementById("kort"+(id)).src.indexOf("cardback_hover.svg") != -1) {
+	// EN TIME IF-SATS SOM KOLLAR OM DEN REDAN HAR KÖRTS
 	
-		document.getElementById("kort"+(id)).src = "cardback.svg";
+	
+	if (val1 == val1xx && val2 == val2yy) {
+			
+			
+    	restoreHidImage(val1);
+	
+    	restoreHidImage(val2);
 		
+		val1 = null;
+		val2 = null;
+		
+		if (spelare1) {
+			updatetext("Spelare 2:s tur.");
+			spelare1 = false;
+		}
+	
+		else {
+			updatetext("Spelare 1:s tur.");
+			spelare1 = true;
+		}
 	}
-}
 
-function blockMove() {
-      event.preventDefault() ;
 }
 
 function openoptionbox() {
@@ -349,6 +371,14 @@ function openoptionbox() {
 
 function closeoptionbox() {
 	document.getElementById("options").className = "ishidden";
+}
+
+function openaboutbox() {
+	document.getElementById("about").className = "isnothidden";
+}
+
+function closeaboutbox() {
+	document.getElementById("about").className = "ishidden";
 }
 
 
@@ -366,47 +396,41 @@ _gaq.push(['_trackPageview']);
 
 </head>
 
-<body onload="load()" ontouchmove="blockMove()">
+<body>
 
 <header>
 	<h1>Linder Memory</h1>
 </header>
 
-<table>
+<?php
 
-	<tr>
-		<td><img src="cardback.svg" height="75" width="75" id="kort1" onclick="click(1)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(1)" onmouseout="unhover(1)" '; ?>class="kort" /></td>
-		<td><img src="cardback.svg" height="75" width="75" id="kort2" onclick="click(2)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(2)" onmouseout="unhover(2)" '; ?>class="kort" /></td>
-		<td><img src="cardback.svg" height="75" width="75" id="kort3" onclick="click(3)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(3)" onmouseout="unhover(3)" '; ?>class="kort" /></td>
-		<td><img src="cardback.svg" height="75" width="75" id="kort4" onclick="click(4)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(4)" onmouseout="unhover(4)" '; ?>class="kort" /></td>
-	</tr>
-	
-	<tr>
-		<td><img src="cardback.svg" height="75" width="75" id="kort5" onclick="click(5)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(5)" onmouseout="unhover(5)" '; ?>class="kort" /></td>
-		<td><img src="cardback.svg" height="75" width="75" id="kort6" onclick="click(6)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(6)" onmouseout="unhover(6)" '; ?>class="kort" /></td>
-		<td><img src="cardback.svg" height="75" width="75" id="kort7" onclick="click(7)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(7)" onmouseout="unhover(7)" '; ?>class="kort" /></td>
-		<td><img src="cardback.svg" height="75" width="75" id="kort8" onclick="click(8)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(8)" onmouseout="unhover(8)" '; ?>class="kort" /></td>
-	</tr>
-	
-	<tr>
-		<td><img src="cardback.svg" height="75" width="75" id="kort9" onclick="click(9)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(9)" onmouseout="unhover(9)" '; ?>class="kort" /></td>
-		<td><img src="cardback.svg" height="75" width="75" id="kort10" onclick="click(10)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(10)" onmouseout="unhover(10)" '; ?>class="kort" /></td>
-		<td><img src="cardback.svg" height="75" width="75" id="kort11" onclick="click(11)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(11)" onmouseout="unhover(11)" '; ?>class="kort" /></td>
-		<td><img src="cardback.svg" height="75" width="75" id="kort12" onclick="click(12)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(12)" onmouseout="unhover(12)" '; ?>class="kort" /></td>
-	</tr>
-	
-	<tr>
-		<td><img src="cardback.svg" height="75" width="75" id="kort13" onclick="click(13)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(13)" onmouseout="unhover(13)" '; ?>class="kort" /></td>
-		<td><img src="cardback.svg" height="75" width="75" id="kort14" onclick="click(14)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(14)" onmouseout="unhover(14)" '; ?>class="kort" /></td>
-		<td><img src="cardback.svg" height="75" width="75" id="kort15" onclick="click(15)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(15)" onmouseout="unhover(15)" '; ?>class="kort" /></td>
-		<td><img src="cardback.svg" height="75" width="75" id="kort16" onclick="click(16)" <?php if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(16)" onmouseout="unhover(16)" '; ?>class="kort" /></td>
-	</tr>
+echo "<table>";
 
-</table>
+$numberOfUniqueCards = 8;
+
+for ($i = 0; $i < $numberOfUniqueCards*2; $i++) {
+
+    if($i % sqrt($numberOfUniqueCards*2) == 0) echo "\n\t<tr>\n";
+
+    echo "\t\t" . '<td id="flip-' . ($i+1) . '" class="flip-container" onclick="clickclick(' . ($i+1) . ')"><div class="flipper"';
+    
+    //if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo ' onmouseover="hover(' . ($i+1) . ')" onmouseout="unhover(' . ($i+1) . ')"';
+    
+    echo '><div class="cardbackside"></div>'; //<img src="cardback.svg" height="75" width="75" id="backkort' . ($i+1) . '" class="kort" alt="FlipCard ' . ($i+1) . '" />
+    echo '<img src="cardback.svg" height="75" width="75" id="kort' . ($i+1) . '" class="kort" alt="FlipCard ' . ($i+1) . '" /></div></td>' . "\n";
+    
+    if($i % sqrt($numberOfUniqueCards*2) == 3) echo "\t</tr>\n";
+
+}
+
+echo "</table>\n\n";
+
+
+?>
 
 <div id="textdisplay">
 	
-	<p id="infotext">Laddar, snart så!!</p>
+	<p id="infotext">Loading, get ready!!</p>
 
 	<p id="stats">Player 1: <span id="paircounter_1">0</span> Player 2: <span id="paircounter_2">0</span></p>
 
@@ -415,8 +439,18 @@ _gaq.push(['_trackPageview']);
 <div id="options" class="ishidden">
 	<h2>Options</h2>
 	<p><span class="onclicklink" onclick="load()">New Game</span></p>
-	<p>Flickr/500px integration, save game, all english, are features which is coming soon...</p>
+	<p>Flickr/500px integration, game save, all english - hopefully features which will be coming soon!</p>
 	<p><span class="onclicklink close" onclick="closeoptionbox()">Close</span></p>
+</div>
+
+<div id="about" class="ishidden">
+	<h2>About</h2>
+	<p>A HTML5/JavaScript based Memory game developed by Marcus Linder.</p>
+	<p>Optimized for iPhone as<br />"Home Screen Web App".</p>
+	<p><a href="http://marcuslinder.se/">marcuslinder.se</a>/memory</p>
+	<p>Version v1.3 (2013-01-04)</p>
+	<p class="smaller">Version v1.2 (2012-05-14)</p>
+	<p><span class="onclicklink close" onclick="closeaboutbox()">Close</span></p>
 </div>
 
 <?php // <p>number of clicks: <span id="clickcounter">0</span>.</p> ?>
@@ -425,21 +459,28 @@ _gaq.push(['_trackPageview']);
 
 <?php // 1.3?? <nav>Settings | <a href="http://marcuslinder.se/">About</a></nav> ?>
 
-<nav><span class="onclicklink" onclick="openoptionbox()">Options</span> | <a href="http://marcuslinder.se/">marcuslinder.se</a>/memory [v1.2]</nav>
-
+<nav><span class="onclicklink" onclick="openoptionbox()">Options</span> | <span class="onclicklink" onclick="openaboutbox()">About</span></nav>
 
 <footer>
 	
-	<p><a href="http://marcuslinder.se/">marcuslinder.se</a>/memory [v1.2]</p>
+	<p><a href="http://marcuslinder.se/">marcuslinder.se</a>/memory [v1.3]</p>
 
-    <?php //if(!(strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPhone'))) echo 'onmouseover="hover(13)" onmouseout="unhover(13)" '; ?>
-
-<?php // echo($_SERVER['HTTP_USER_AGENT']); ?>
 </footer>
 
 <div id="extraspace"><br><br><br></div>
 
-<?php // <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />?>
+<script>
+
+    load();
+
+    if(((window.orientation === 90 || window.orientation === -90) && window.innerHeight >= 300) || (window.orientation === 0 && window.innerHeight >= 460)) {
+	
+    	document.body.addEventListener('touchmove', function(event) {
+        	event.preventDefault();
+		}, false);
+	}
+	
+</script>
 
 </body>
 </html>
