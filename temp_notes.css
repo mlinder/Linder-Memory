@@ -1,0 +1,12 @@
+
+/* Portrait */
+@media screen and (orientation:portrait) {
+   /* Portrait styles here */
+   	body { background-color: #F33; }
+
+}
+/* Landscape */
+@media screen and (orientation:landscape) {
+   /* Landscape styles here */
+      	body { background-color: #3F3; }
+}

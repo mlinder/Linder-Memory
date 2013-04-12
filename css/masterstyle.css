@@ -1,0 +1,51 @@
+body {
+	margin: 0;
+	padding: 0;
+	font: 10px "HelveticaNeue-Bold", sans-serif;
+}
+
+h1, p {
+    margin: 0;
+    padding: 0;
+}
+
+/*html {
+    -webkit-text-size-adjust: none;
+}*/
+
+.kort {
+	cursor: pointer; 
+}
+
+a {
+	color: #98ff9f;
+	text-decoration: none;
+	outline: none;
+}
+
+/*.kort {
+    -webkit-transform: rotateY(180deg);
+}
+
+.kortnoclick {
+    -webkit-transform: rotateY(180deg);
+}*/
+
+footer {
+    display:none;
+}
+
+#extraspace {
+    display: none;
+}
+.ishidden {
+    visibility:hidden;
+    display: none;
+    z-index:-1000;
+    
+}
+
+.isnothidden {
+    z-index:1000;
+
+}

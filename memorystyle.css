@@ -1,0 +1,63 @@
+body {
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	font: 10pt "Lucida Grande", sans-serif;
+}
+
+html {
+    -webkit-text-size-adjust: none;
+}
+
+h1 {
+	padding: 0px; color:#FFF; background-color: transparent; font:16pt "Lucida Grande", Verdana, Arial, sans-serif; text-shadow: #000 0px 2px 0px; text-align: center;
+}
+
+p {
+	padding: 0px; color:#FFF; background-color: transparent; font:12pt "Lucida Grande", Verdana, Arial, sans-serif; text-shadow: #000 0px 2px 0px; text-align: center;
+}
+
+.about {
+	
+	color: #eee;
+	font-size: 8pt;
+	
+}
+table {
+	color: #000;
+	background-color: #FFF;
+	margin: 20px auto;
+	padding: 0px;
+	border-collapse: collapse;
+}
+
+td {
+	text-align: center;
+	padding: 0px;
+	border: 20px solid #FFF;
+}
+
+tr {
+	padding: 10px;
+}
+
+.kort {
+	cursor: pointer; 
+}
+
+a {
+	color: #98ff9f;
+	text-decoration: none;
+	outline: none;
+}
+/* Portrait */
+@media screen and (orientation:portrait) {
+   /* Portrait styles here */
+   	body { background-color: #F33; }
+
+}
+/* Landscape */
+@media screen and (orientation:landscape) {
+   /* Landscape styles here */
+      	body { background-color: #3F3; }
+}

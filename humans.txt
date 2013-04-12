@@ -1,0 +1,7 @@
+/* the humans responsible & colophon */
+/* humanstxt.org */
+
+Marcus Linder
+Site: marcuslinder.se
+Twitter: m86linder
+Location: Stockholm, Sweden
